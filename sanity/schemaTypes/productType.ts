@@ -121,7 +121,7 @@ export const productType = defineType({
       type: "boolean",
       group: "inventory",
       initialValue: false,
-      description: "Does this product require assembly?",
+      description: "Does this products require assembly?",
     }),
   ],
   preview: {

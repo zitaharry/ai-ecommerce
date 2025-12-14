@@ -5,7 +5,7 @@ import { LOW_STOCK_THRESHOLD } from "@/lib/constants/stock";
 // Shared Query Fragments (DRY)
 // ============================================
 
-/** Common filter conditions for product filtering */
+/** Common filter conditions for products filtering */
 const PRODUCT_FILTER_CONDITIONS = `
   _type == "product"
   && ($categorySlug == "" || category->slug.current == $categorySlug)
@@ -17,7 +17,7 @@ const PRODUCT_FILTER_CONDITIONS = `
   && ($inStock == false || stock > 0)
 `;
 
-/** Projection for filtered product lists (includes multiple images for hover) */
+/** Projection for filtered products lists (includes multiple images for hover) */
 const FILTERED_PRODUCT_PROJECTION = `{
   _id,
   name,
@@ -141,8 +141,8 @@ export const PRODUCTS_BY_CATEGORY_QUERY = defineQuery(`*[
 }`);
 
 /**
- * Get single product by slug
- * Used on product detail page
+ * Get single products by slug
+ * Used on products detail page
  */
 export const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[
   _type == "product"
@@ -218,35 +218,35 @@ export const SEARCH_PRODUCTS_QUERY = defineQuery(`*[
 
 /**
  * Filter products - ordered by name (A-Z)
- * Returns up to 4 images for hover preview in product cards
+ * Returns up to 4 images for hover preview in products cards
  */
 export const FILTER_PRODUCTS_BY_NAME_QUERY = defineQuery(
-  `*[${PRODUCT_FILTER_CONDITIONS}] | order(name asc) ${FILTERED_PRODUCT_PROJECTION}`
+  `*[${PRODUCT_FILTER_CONDITIONS}] | order(name asc) ${FILTERED_PRODUCT_PROJECTION}`,
 );
 
 /**
  * Filter products - ordered by price ascending
- * Returns up to 4 images for hover preview in product cards
+ * Returns up to 4 images for hover preview in products cards
  */
 export const FILTER_PRODUCTS_BY_PRICE_ASC_QUERY = defineQuery(
-  `*[${PRODUCT_FILTER_CONDITIONS}] | order(price asc) ${FILTERED_PRODUCT_PROJECTION}`
+  `*[${PRODUCT_FILTER_CONDITIONS}] | order(price asc) ${FILTERED_PRODUCT_PROJECTION}`,
 );
 
 /**
  * Filter products - ordered by price descending
- * Returns up to 4 images for hover preview in product cards
+ * Returns up to 4 images for hover preview in products cards
  */
 export const FILTER_PRODUCTS_BY_PRICE_DESC_QUERY = defineQuery(
-  `*[${PRODUCT_FILTER_CONDITIONS}] | order(price desc) ${FILTERED_PRODUCT_PROJECTION}`
+  `*[${PRODUCT_FILTER_CONDITIONS}] | order(price desc) ${FILTERED_PRODUCT_PROJECTION}`,
 );
 
 /**
  * Filter products - ordered by relevance (when searching)
  * Uses score() for search term matching
- * Returns up to 4 images for hover preview in product cards
+ * Returns up to 4 images for hover preview in products cards
  */
 export const FILTER_PRODUCTS_BY_RELEVANCE_QUERY = defineQuery(
-  `*[${PRODUCT_FILTER_CONDITIONS}] | ${RELEVANCE_SCORE} | order(_score desc, name asc) ${FILTERED_PRODUCT_PROJECTION}`
+  `*[${PRODUCT_FILTER_CONDITIONS}] | ${RELEVANCE_SCORE} | order(_score desc, name asc) ${FILTERED_PRODUCT_PROJECTION}`,
 );
 
 /**
@@ -316,7 +316,7 @@ export const OUT_OF_STOCK_PRODUCTS_QUERY = defineQuery(`*[
 
 /**
  * Search products for AI shopping assistant
- * Full-featured search with all filters and product details
+ * Full-featured search with all filters and products details
  */
 export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
   _type == "product"

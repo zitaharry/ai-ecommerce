@@ -44,7 +44,7 @@ const FeaturedCarousel = ({ products }: FeaturedCarouselProps) => {
     (index: number) => {
       api?.scrollTo(index);
     },
-    [api]
+    [api],
   );
 
   if (products.length === 0) {
@@ -93,7 +93,7 @@ const FeaturedCarousel = ({ products }: FeaturedCarouselProps) => {
                 "h-2 w-2 rounded-full transition-all duration-300",
                 current === index
                   ? "w-6 bg-white"
-                  : "bg-white/40 hover:bg-white/60"
+                  : "bg-white/40 hover:bg-white/60",
               )}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -118,7 +118,7 @@ function FeaturedSlide({ product }: FeaturedSlideProps) {
         {mainImage ? (
           <Image
             src={mainImage}
-            alt={product.name ?? "Featured product"}
+            alt={product.name ?? "Featured products"}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 60vw"

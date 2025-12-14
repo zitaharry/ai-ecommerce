@@ -1,7 +1,7 @@
 import { defineQuery } from "next-sanity";
 
 /**
- * Get total product count
+ * Get total products count
  */
 export const PRODUCT_COUNT_QUERY = defineQuery(`count(*[_type == "product"])`);
 

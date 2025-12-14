@@ -314,7 +314,7 @@ export type CUSTOMER_BY_STRIPE_ID_QUERYResult = {
 
 // Source: ./lib/sanity/queries/orders.ts
 // Variable: ORDERS_BY_USER_QUERY
-// Query: *[  _type == "order"  && clerkUserId == $clerkUserId] | order(createdAt desc) {  _id,  orderNumber,  total,  status,  createdAt,  "itemCount": count(items),  "itemNames": items[].product->name,  "itemImages": items[].product->images[0].asset->url}
+// Query: *[  _type == "order"  && clerkUserId == $clerkUserId] | order(createdAt desc) {  _id,  orderNumber,  total,  status,  createdAt,  "itemCount": count(items),  "itemNames": items[].products->name,  "itemImages": items[].products->images[0].asset->url}
 export type ORDERS_BY_USER_QUERYResult = Array<{
   _id: string;
   orderNumber: string | null;
@@ -326,7 +326,7 @@ export type ORDERS_BY_USER_QUERYResult = Array<{
   itemImages: Array<string | null> | null;
 }>;
 // Variable: ORDER_BY_ID_QUERY
-// Query: *[  _type == "order"  && _id == $id][0] {  _id,  orderNumber,  clerkUserId,  email,  items[]{    _key,    quantity,    priceAtPurchase,    product->{      _id,      name,      "slug": slug.current,      "image": images[0]{        asset->{          _id,          url        }      }    }  },  total,  status,  address{    name,    line1,    line2,    city,    postcode,    country  },  stripePaymentId,  createdAt}
+// Query: *[  _type == "order"  && _id == $id][0] {  _id,  orderNumber,  clerkUserId,  email,  items[]{    _key,    quantity,    priceAtPurchase,    products->{      _id,      name,      "slug": slug.current,      "image": images[0]{        asset->{          _id,          url        }      }    }  },  total,  status,  address{    name,    line1,    line2,    city,    postcode,    country  },  stripePaymentId,  createdAt}
 export type ORDER_BY_ID_QUERYResult = {
   _id: string;
   orderNumber: string | null;
@@ -379,7 +379,7 @@ export type ORDER_BY_STRIPE_PAYMENT_ID_QUERYResult = {
 
 // Source: ./lib/sanity/queries/products.ts
 // Variable: ALL_PRODUCTS_QUERY
-// Query: *[  _type == "product"] | order(name asc) {  _id,  name,  "slug": slug.current,  description,  price,  "images": images[]{    _key,    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  dimensions,  stock,  featured,  assemblyRequired}
+// Query: *[  _type == "products"] | order(name asc) {  _id,  name,  "slug": slug.current,  description,  price,  "images": images[]{    _key,    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  dimensions,  stock,  featured,  assemblyRequired}
 export type ALL_PRODUCTS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -407,7 +407,7 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
   assemblyRequired: boolean | null;
 }>;
 // Variable: FEATURED_PRODUCTS_QUERY
-// Query: *[  _type == "product"  && featured == true  && stock > 0] | order(name asc) [0...6] {  _id,  name,  "slug": slug.current,  description,  price,  "images": images[]{    _key,    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  stock}
+// Query: *[  _type == "products"  && featured == true  && stock > 0] | order(name asc) [0...6] {  _id,  name,  "slug": slug.current,  description,  price,  "images": images[]{    _key,    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  stock}
 export type FEATURED_PRODUCTS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -430,7 +430,7 @@ export type FEATURED_PRODUCTS_QUERYResult = Array<{
   stock: number | null;
 }>;
 // Variable: PRODUCTS_BY_CATEGORY_QUERY
-// Query: *[  _type == "product"  && category->slug.current == $categorySlug] | order(name asc) {  _id,  name,  "slug": slug.current,  price,  "image": images[0]{    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
+// Query: *[  _type == "products"  && category->slug.current == $categorySlug] | order(name asc) {  _id,  name,  "slug": slug.current,  price,  "image": images[0]{    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
 export type PRODUCTS_BY_CATEGORY_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -453,7 +453,7 @@ export type PRODUCTS_BY_CATEGORY_QUERYResult = Array<{
   stock: number | null;
 }>;
 // Variable: PRODUCT_BY_SLUG_QUERY
-// Query: *[  _type == "product"  && slug.current == $slug][0] {  _id,  name,  "slug": slug.current,  description,  price,  "images": images[]{    _key,    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  dimensions,  stock,  featured,  assemblyRequired}
+// Query: *[  _type == "products"  && slug.current == $slug][0] {  _id,  name,  "slug": slug.current,  description,  price,  "images": images[]{    _key,    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  dimensions,  stock,  featured,  assemblyRequired}
 export type PRODUCT_BY_SLUG_QUERYResult = {
   _id: string;
   name: string | null;
@@ -481,7 +481,7 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
   assemblyRequired: boolean | null;
 } | null;
 // Variable: SEARCH_PRODUCTS_QUERY
-// Query: *[  _type == "product"  && (    name match $searchQuery + "*"    || description match $searchQuery + "*"  )] | score(  boost(name match $searchQuery + "*", 3),  boost(description match $searchQuery + "*", 1)) | order(_score desc) {  _id,  _score,  name,  "slug": slug.current,  price,  "image": images[0]{    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
+// Query: *[  _type == "products"  && (    name match $searchQuery + "*"    || description match $searchQuery + "*"  )] | score(  boost(name match $searchQuery + "*", 3),  boost(description match $searchQuery + "*", 1)) | order(_score desc) {  _id,  _score,  name,  "slug": slug.current,  price,  "image": images[0]{    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
 export type SEARCH_PRODUCTS_QUERYResult = Array<{
   _id: string;
   _score: null;
@@ -505,7 +505,7 @@ export type SEARCH_PRODUCTS_QUERYResult = Array<{
   stock: number | null;
 }>;
 // Variable: FILTER_PRODUCTS_BY_NAME_QUERY
-// Query: *[  _type == "product"  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($color == "" || color == $color)  && ($material == "" || material == $material)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")  && ($inStock == false || stock > 0)] | order(name asc) {  _id,  name,  "slug": slug.current,  price,  "images": images[0...4]{    _key,    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
+// Query: *[  _type == "products"  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($color == "" || color == $color)  && ($material == "" || material == $material)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")  && ($inStock == false || stock > 0)] | order(name asc) {  _id,  name,  "slug": slug.current,  price,  "images": images[0...4]{    _key,    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
 export type FILTER_PRODUCTS_BY_NAME_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -528,7 +528,7 @@ export type FILTER_PRODUCTS_BY_NAME_QUERYResult = Array<{
   stock: number | null;
 }>;
 // Variable: FILTER_PRODUCTS_BY_PRICE_ASC_QUERY
-// Query: *[  _type == "product"  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($color == "" || color == $color)  && ($material == "" || material == $material)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")  && ($inStock == false || stock > 0)] | order(price asc) {  _id,  name,  "slug": slug.current,  price,  "images": images[0...4]{    _key,    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
+// Query: *[  _type == "products"  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($color == "" || color == $color)  && ($material == "" || material == $material)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")  && ($inStock == false || stock > 0)] | order(price asc) {  _id,  name,  "slug": slug.current,  price,  "images": images[0...4]{    _key,    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
 export type FILTER_PRODUCTS_BY_PRICE_ASC_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -551,7 +551,7 @@ export type FILTER_PRODUCTS_BY_PRICE_ASC_QUERYResult = Array<{
   stock: number | null;
 }>;
 // Variable: FILTER_PRODUCTS_BY_PRICE_DESC_QUERY
-// Query: *[  _type == "product"  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($color == "" || color == $color)  && ($material == "" || material == $material)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")  && ($inStock == false || stock > 0)] | order(price desc) {  _id,  name,  "slug": slug.current,  price,  "images": images[0...4]{    _key,    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
+// Query: *[  _type == "products"  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($color == "" || color == $color)  && ($material == "" || material == $material)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")  && ($inStock == false || stock > 0)] | order(price desc) {  _id,  name,  "slug": slug.current,  price,  "images": images[0...4]{    _key,    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
 export type FILTER_PRODUCTS_BY_PRICE_DESC_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -574,7 +574,7 @@ export type FILTER_PRODUCTS_BY_PRICE_DESC_QUERYResult = Array<{
   stock: number | null;
 }>;
 // Variable: FILTER_PRODUCTS_BY_RELEVANCE_QUERY
-// Query: *[  _type == "product"  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($color == "" || color == $color)  && ($material == "" || material == $material)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")  && ($inStock == false || stock > 0)] | score(  boost(name match $searchQuery + "*", 3),  boost(description match $searchQuery + "*", 1)) | order(_score desc, name asc) {  _id,  name,  "slug": slug.current,  price,  "images": images[0...4]{    _key,    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
+// Query: *[  _type == "products"  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($color == "" || color == $color)  && ($material == "" || material == $material)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")  && ($inStock == false || stock > 0)] | score(  boost(name match $searchQuery + "*", 3),  boost(description match $searchQuery + "*", 1)) | order(_score desc, name asc) {  _id,  name,  "slug": slug.current,  price,  "images": images[0...4]{    _key,    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  stock}
 export type FILTER_PRODUCTS_BY_RELEVANCE_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -597,7 +597,7 @@ export type FILTER_PRODUCTS_BY_RELEVANCE_QUERYResult = Array<{
   stock: number | null;
 }>;
 // Variable: PRODUCTS_BY_IDS_QUERY
-// Query: *[  _type == "product"  && _id in $ids] {  _id,  name,  "slug": slug.current,  price,  "image": images[0]{    asset->{      _id,      url    },    hotspot  },  stock}
+// Query: *[  _type == "products"  && _id in $ids] {  _id,  name,  "slug": slug.current,  price,  "image": images[0]{    asset->{      _id,      url    },    hotspot  },  stock}
 export type PRODUCTS_BY_IDS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -613,7 +613,7 @@ export type PRODUCTS_BY_IDS_QUERYResult = Array<{
   stock: number | null;
 }>;
 // Variable: LOW_STOCK_PRODUCTS_QUERY
-// Query: *[  _type == "product"  && stock > 0  && stock <= 5] | order(stock asc) {  _id,  name,  "slug": slug.current,  stock,  "image": images[0]{    asset->{      _id,      url    }  }}
+// Query: *[  _type == "products"  && stock > 0  && stock <= 5] | order(stock asc) {  _id,  name,  "slug": slug.current,  stock,  "image": images[0]{    asset->{      _id,      url    }  }}
 export type LOW_STOCK_PRODUCTS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -627,7 +627,7 @@ export type LOW_STOCK_PRODUCTS_QUERYResult = Array<{
   } | null;
 }>;
 // Variable: OUT_OF_STOCK_PRODUCTS_QUERY
-// Query: *[  _type == "product"  && stock == 0] | order(name asc) {  _id,  name,  "slug": slug.current,  "image": images[0]{    asset->{      _id,      url    }  }}
+// Query: *[  _type == "products"  && stock == 0] | order(name asc) {  _id,  name,  "slug": slug.current,  "image": images[0]{    asset->{      _id,      url    }  }}
 export type OUT_OF_STOCK_PRODUCTS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -640,7 +640,7 @@ export type OUT_OF_STOCK_PRODUCTS_QUERYResult = Array<{
   } | null;
 }>;
 // Variable: AI_SEARCH_PRODUCTS_QUERY
-// Query: *[  _type == "product"  && (    $searchQuery == ""    || name match $searchQuery + "*"    || description match $searchQuery + "*"    || category->title match $searchQuery + "*"  )  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($material == "" || material == $material)  && ($color == "" || color == $color)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)] | order(name asc) [0...20] {  _id,  name,  "slug": slug.current,  description,  price,  "image": images[0]{    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  dimensions,  stock,  featured,  assemblyRequired}
+// Query: *[  _type == "products"  && (    $searchQuery == ""    || name match $searchQuery + "*"    || description match $searchQuery + "*"    || category->title match $searchQuery + "*"  )  && ($categorySlug == "" || category->slug.current == $categorySlug)  && ($material == "" || material == $material)  && ($color == "" || color == $color)  && ($minPrice == 0 || price >= $minPrice)  && ($maxPrice == 0 || price <= $maxPrice)] | order(name asc) [0...20] {  _id,  name,  "slug": slug.current,  description,  price,  "image": images[0]{    asset->{      _id,      url    }  },  category->{    _id,    title,    "slug": slug.current  },  material,  color,  dimensions,  stock,  featured,  assemblyRequired}
 export type AI_SEARCH_PRODUCTS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -668,7 +668,7 @@ export type AI_SEARCH_PRODUCTS_QUERYResult = Array<{
 
 // Source: ./lib/sanity/queries/stats.ts
 // Variable: PRODUCT_COUNT_QUERY
-// Query: count(*[_type == "product"])
+// Query: count(*[_type == "products"])
 export type PRODUCT_COUNT_QUERYResult = number;
 // Variable: ORDER_COUNT_QUERY
 // Query: count(*[_type == "order"])
@@ -677,7 +677,7 @@ export type ORDER_COUNT_QUERYResult = number;
 // Query: math::sum(*[  _type == "order"  && status in ["paid", "shipped", "delivered"]].total)
 export type TOTAL_REVENUE_QUERYResult = number;
 // Variable: ORDERS_LAST_7_DAYS_QUERY
-// Query: *[  _type == "order"  && createdAt >= $startDate  && !(_id in path("drafts.**"))] | order(createdAt desc) {  _id,  orderNumber,  total,  status,  createdAt,  "itemCount": count(items),  items[]{    quantity,    priceAtPurchase,    "productName": product->name,    "productId": product->_id  }}
+// Query: *[  _type == "order"  && createdAt >= $startDate  && !(_id in path("drafts.**"))] | order(createdAt desc) {  _id,  orderNumber,  total,  status,  createdAt,  "itemCount": count(items),  items[]{    quantity,    priceAtPurchase,    "productName": products->name,    "productId": products->_id  }}
 export type ORDERS_LAST_7_DAYS_QUERYResult = Array<{
   _id: string;
   orderNumber: string | null;
@@ -701,7 +701,7 @@ export type ORDER_STATUS_DISTRIBUTION_QUERYResult = {
   cancelled: number;
 };
 // Variable: TOP_SELLING_PRODUCTS_QUERY
-// Query: *[  _type == "order"  && status in ["paid", "shipped", "delivered"]  && !(_id in path("drafts.**"))] {  items[]{    "productId": product->_id,    "productName": product->name,    "productPrice": product->price,    quantity  }}.items[]
+// Query: *[  _type == "order"  && status in ["paid", "shipped", "delivered"]  && !(_id in path("drafts.**"))] {  items[]{    "productId": products->_id,    "productName": products->name,    "productPrice": products->price,    quantity  }}.items[]
 export type TOP_SELLING_PRODUCTS_QUERYResult = Array<{
   productId: string | null;
   productName: string | null;
@@ -709,7 +709,7 @@ export type TOP_SELLING_PRODUCTS_QUERYResult = Array<{
   quantity: number | null;
 } | null>;
 // Variable: PRODUCTS_INVENTORY_QUERY
-// Query: *[_type == "product"] {  _id,  name,  price,  stock,  "category": category->title}
+// Query: *[_type == "products"] {  _id,  name,  price,  stock,  "category": category->title}
 export type PRODUCTS_INVENTORY_QUERYResult = Array<{
   _id: string;
   name: string | null;
